@@ -62,7 +62,7 @@ function App() {
       role: "Data Quality Analyst",
       company: "Dự án AI của Avalon Concentrix",
       period: "04/2025 - 11/2025",
-      image: "/exp-avalon.jpg", 
+      image: "/cnx.png", 
       fallback: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=800",
       icon: <Brain className="w-6 h-6 text-blue-500" />,
       description: [
@@ -92,7 +92,7 @@ function App() {
       role: "Học viên & Thực tập dự án",
       company: "MindX Technology School",
       period: "11/2024 - 02/2025",
-      image: "/ach-mindx.JPG", 
+      image: "/mindx.png", 
       fallback: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=800",
       icon: <Code className="w-6 h-6 text-yellow-500" />,
       description: [
@@ -161,7 +161,7 @@ function App() {
       title: "Đăng tạp chí quốc tế JDI",
       year: "2025",
       description: "Bài nghiên cứu được đăng trên tạp chí JDI của UEF (Chủ đề: Gen Z & Livestream Trust).",
-      images: ["/ach-jdi.jpg"],
+      images: ["/jdi.jpg"],
       icon: <ExternalLink className="text-white" />,
       bg: "bg-indigo-500",
       border: "border-indigo-500"
