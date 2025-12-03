@@ -5,18 +5,21 @@ import {
   Briefcase, GraduationCap, Award, 
   ExternalLink, ChevronDown, Linkedin,
   Database, Brain, Users, Dumbbell,
-  BookOpen, Star, Lightbulb, Globe
+  BookOpen, Star, Lightbulb, Globe,
+  Palette, ArrowDown, X, ZoomIn
 } from 'lucide-react';
 
 function App() {
   const [activeSection, setActiveSection] = useState('home');
   const [isScrolled, setIsScrolled] = useState(false);
+  
+  // State cho Lightbox (Xem ảnh phóng to)
+  const [selectedImage, setSelectedImage] = useState(null);
 
-  // Xử lý sự kiện cuộn trang để đổi màu menu
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
-      const sections = ['home', 'about', 'experience', 'skills', 'education', 'achievements'];
+      const sections = ['home', 'about', 'experience', 'skills', 'education'];
       for (const section of sections) {
         const element = document.getElementById(section);
         if (element) {
@@ -40,7 +43,11 @@ function App() {
     }
   };
 
-  // --- DỮ LIỆU KINH NGHIỆM (EXPERIENCE) ---
+  const handleImageError = (e, fallbackUrl) => {
+    e.target.src = fallbackUrl || "https://images.unsplash.com/photo-1557683316-973673baf926?auto=format&fit=crop&q=80&w=800";
+  };
+
+  // --- DỮ LIỆU KINH NGHIỆM ---
   const experiences = [
     {
       id: 1,
@@ -48,6 +55,7 @@ function App() {
       company: "Dự án AI của Avalon Concentrix",
       period: "04/2025 - 11/2025",
       image: "/exp-avalon.jpg", 
+      fallback: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=800",
       icon: <Brain className="w-6 h-6 text-blue-500" />,
       description: [
         "Hiểu sâu về quy trình đào tạo AI và xử lý dữ liệu huấn luyện (Training Data).",
@@ -61,7 +69,8 @@ function App() {
       role: "Trader & Admin",
       company: "The Bullish Alliance",
       period: "10/2024 - 04/2025",
-      image: "/exp-trader.jpg", 
+      image: "/exp-trader.PNG", 
+      fallback: "https://images.unsplash.com/photo-1611974765270-ca1258634369?auto=format&fit=crop&q=80&w=800",
       icon: <TrendingUp className="w-6 h-6 text-green-500" />,
       description: [
         "Quản lý & phân tích dữ liệu thị trường (Forex & Commodity).",
@@ -75,7 +84,8 @@ function App() {
       role: "Học viên & Thực tập dự án",
       company: "MindX Technology School",
       period: "11/2024 - 02/2025",
-      image: "/exp-mindx.jpg", 
+      image: "/ach-mindx.JPG", 
+      fallback: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=800",
       icon: <Code className="w-6 h-6 text-yellow-500" />,
       description: [
         "Dự án 1: Dashboard phân tích doanh số SME, xác định lĩnh vực đầu tư tiềm năng.",
@@ -89,11 +99,26 @@ function App() {
       company: "CLB Calisthenics and Gym - UEF",
       period: "01/2023 - 02/2025",
       image: "/exp-coach.jpg", 
+      fallback: "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&q=80&w=800",
       icon: <Dumbbell className="w-6 h-6 text-red-500" />,
       description: [
         "Lãnh đạo và vận hành câu lạc bộ với 50 thành viên.",
         "Tổng hợp, phân tích dữ liệu thành viên để đưa ra lịch trình tập luyện phù hợp.",
         "Tổ chức các hoạt động và sự kiện cho câu lạc bộ."
+      ]
+    },
+    {
+      id: 5,
+      role: "Designer & Media Team",
+      company: "Khoa Quản trị Kinh doanh (FBA) - UEF",
+      period: "2022 - 2023",
+      image: "/exp-designer.jpg", 
+      fallback: "https://images.unsplash.com/photo-1626785774573-4b799314348d?auto=format&fit=crop&q=80&w=800",
+      icon: <Palette className="w-6 h-6 text-purple-500" />,
+      description: [
+        "Thiết kế các ấn phẩm truyền thông (Poster, Banner, Standee) cho các sự kiện lớn của Khoa.",
+        "Quản lý hình ảnh và xây dựng thương hiệu visual cho Fanpage khoa FBA.",
+        "Phối hợp với ban tổ chức để lên ý tưởng concept hình ảnh cho các chương trình sinh viên."
       ]
     }
   ];
@@ -103,93 +128,98 @@ function App() {
       school: "UEF International University",
       degree: "Bachelor of Business Administration",
       period: "2022 - 2026",
-      desc: "Chuyên ngành Quản trị Kinh doanh"
+      desc: "Chuyên ngành Quản trị Kinh doanh",
+      logo: ["/UEF.png"] 
     },
     {
       school: "MindX Technology School",
       degree: "Data Analyst Program",
       period: "2023 - 2024",
-      desc: "Python, SQL, BI, Machine Learning"
+      desc: "Python, SQL, BI, Machine Learning",
+      logo: ["/mindx.png"]
     },
     {
       school: "FTMO Academy",
       degree: "Trader Development Program",
       period: "2024",
-      desc: "Phân tích kỹ thuật và tâm lý giao dịch"
+      desc: "Phân tích kỹ thuật và tâm lý giao dịch",
+      logo: ["/ftmo.png"]
     }
   ];
 
-  // --- DỮ LIỆU THÀNH TỰU (ĐÃ SẮP XẾP ĐÚNG YÊU CẦU CỦA BẠN) ---
+  // --- THÀNH TỰU ---
   const achievements = [
-    {
-      title: "Sinh viên 5 tốt cấp trường",
-      year: "2024",
-      description: "Danh hiệu cao quý ghi nhận sự xuất sắc toàn diện trong học tập và rèn luyện.",
-      images: ["/ach-sv5tot.jpg"],
-      icon: <User className="text-blue-500" />,
-      color: "bg-blue-50 border-blue-100"
-    },
-    {
-      title: "Quý quân Strategist Pro",
-      year: "2024",
-      description: "Cuộc thi phân tích dữ liệu (DATA) tại Đại Học Kinh Tế Tài Chính TP.HCM.",
-      images: ["/ach-strategist.jpg"],
-      icon: <Award className="text-yellow-500" />,
-      color: "bg-yellow-50 border-yellow-100"
-    },
-    {
-      title: "Giải Nhất 3 cuộc thi Data MindX",
-      year: "2024",
-      description: "Chiến thắng thuyết phục tại các kỳ Final Test lớp D4E74 và B158.",
-      images: ["/ach-mindx-1.jpg", "/ach-mindx-2.jpg", "/ach-mindx-3.jpg"],
-      icon: <Code className="text-green-500" />,
-      color: "bg-green-50 border-green-100"
-    },
-    
-    // --- MỤC MỚI 1: HỘI THẢO QUỐC TẾ (Đứng trước Giải Nhì NCKH Cấp Trường) ---
-    {
-      title: "Hội thảo Quốc tế Kinh tế Số & Hội nhập",
-      year: "2025",
-      description: "Tham gia và đóng góp tại hội thảo quốc tế về các xu hướng kinh tế số.",
-      images: ["/ach-hoithao.jpg"], 
-      icon: <Globe className="text-teal-500" />,
-      color: "bg-teal-50 border-teal-100"
-    },
-
-    {
-      title: "Giải Nhì NCKH cấp trường",
-      year: "2025",
-      description: "Đề tài nghiên cứu khoa học xuất sắc cấp Đại học UEF.",
-      images: ["/ach-nckh-truong.jpg"],
-      icon: <BookOpen className="text-purple-500" />,
-      color: "bg-purple-50 border-purple-100"
-    },
-
-    // --- MỤC MỚI 2: GIẢI RICUP (Đứng trước Giải Ba NCKH Cấp Bộ) ---
-    {
-      title: "Giải thưởng NC Tiềm năng Ứng dụng RICUP",
-      year: "2025",
-      description: "Giải thưởng vinh danh các nghiên cứu có tính thực tiễn cao tại cuộc thi RICUP.",
-      images: ["/ach-ricup.jpg"], 
-      icon: <Lightbulb className="text-orange-500" />,
-      color: "bg-orange-50 border-orange-100"
-    },
-
-    {
-      title: "Giải Ba NCKH cấp Bộ",
-      year: "2025",
-      description: "Thành tích nghiên cứu khoa học cấp Bộ Giáo dục & Đào tạo.",
-      images: ["/ach-nckh-bo.jpg"],
-      icon: <Star className="text-red-500" />,
-      color: "bg-red-50 border-red-100"
-    },
     {
       title: "Đăng tạp chí quốc tế JDI",
       year: "2025",
       description: "Bài nghiên cứu được đăng trên tạp chí JDI của UEF (Chủ đề: Gen Z & Livestream Trust).",
       images: ["/ach-jdi.jpg"],
-      icon: <ExternalLink className="text-indigo-500" />,
-      color: "bg-indigo-50 border-indigo-100"
+      icon: <ExternalLink className="text-white" />,
+      bg: "bg-indigo-500",
+      border: "border-indigo-500"
+    },
+    {
+      title: "Giải Ba NCKH cấp Bộ",
+      year: "11/2025",
+      description: "Thành tích nghiên cứu khoa học cấp Bộ Giáo dục & Đào tạo.",
+      images: ["/ach-nckh-bo.jpg"],
+      icon: <Star className="text-white" />,
+      bg: "bg-red-500",
+      border: "border-red-500"
+    },
+    {
+      title: "Giải thưởng Nghiên cứu Ứng dụng Tiềm năng RICUP",
+      year: "10/2025",
+      description: "Giải thưởng vinh danh các nghiên cứu có tính thực tiễn cao tại cuộc thi RICUP.",
+      images: ["/ach-ricup.JPG"], 
+      icon: <Lightbulb className="text-white" />,
+      bg: "bg-orange-500",
+      border: "border-orange-500"
+    },
+    {
+      title: "Giải Nhì NCKH cấp trường",
+      year: "05/2025",
+      description: "Đề tài nghiên cứu khoa học xuất sắc cấp Đại học UEF.",
+      images: ["/ach-nckh-truong.JPG"],
+      icon: <BookOpen className="text-white" />,
+      bg: "bg-purple-500",
+      border: "border-purple-500"
+    },
+    {
+      title: "Hội thảo Quốc tế Kinh tế Số & Hội nhập",
+      year: "04/2025",
+      description: "Tham gia và đóng góp tại hội thảo quốc tế về các xu hướng kinh tế số.",
+      images: ["/ach-hoithao.jpeg"], 
+      icon: <Globe className="text-white" />,
+      bg: "bg-teal-500",
+      border: "border-teal-500"
+    },
+    {
+      title: "Quý quân Strategist Pro",
+      year: "06/2024",
+      description: "Cuộc thi phân tích dữ liệu (DATA) tại Đại Học Kinh Tế Tài Chính TP.HCM.",
+      images: ["/ach-strategist.jpg"],
+      icon: <Award className="text-white" />,
+      bg: "bg-yellow-500",
+      border: "border-yellow-500"
+    },
+    {
+      title: "Giải Nhất 3 cuộc thi Data MindX",
+      year: "2024",
+      description: "Chiến thắng thuyết phục tại các kỳ Final Test lớp D4E74 và B158.",
+      images: ["/ach-mindx-1.JPG", "/ach-mindx-2.JPG", "/ach-mindx-3.JPG"],
+      icon: <Code className="text-white" />,
+      bg: "bg-green-500",
+      border: "border-green-500"
+    },
+    {
+      title: "Sinh viên 5 tốt cấp trường",
+      year: "01/2024",
+      description: "Danh hiệu cao quý ghi nhận sự xuất sắc toàn diện trong học tập và rèn luyện.",
+      images: ["/ach-sv5tot.JPG"],
+      icon: <User className="text-white" />,
+      bg: "bg-blue-500",
+      border: "border-blue-500"
     }
   ];
 
@@ -211,13 +241,35 @@ function App() {
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800 font-sans selection:bg-blue-200">
+      
+      {/* --- MODAL XEM ẢNH FULL MÀN HÌNH (LIGHTBOX) --- */}
+      {selectedImage && (
+        <div 
+          className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-4 backdrop-blur-md animate-fade-in"
+          onClick={() => setSelectedImage(null)}
+        >
+          <button 
+            className="absolute top-6 right-6 text-white/80 hover:text-white p-2 rounded-full hover:bg-white/10 transition-all z-[101]"
+            onClick={() => setSelectedImage(null)}
+          >
+            <X size={40} />
+          </button>
+          <img 
+            src={selectedImage} 
+            alt="Full View" 
+            className="max-w-full max-h-[95vh] object-contain rounded-lg shadow-2xl animate-scale-up"
+            onClick={(e) => e.stopPropagation()} 
+          />
+        </div>
+      )}
+
       <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white shadow-md py-2' : 'bg-transparent py-4'}`}>
         <div className="container mx-auto px-6 flex justify-between items-center">
           <div className="text-2xl font-bold text-blue-900 tracking-tighter cursor-pointer" onClick={() => scrollToSection('home')}>
             NN<span className="text-blue-500">.</span>
           </div>
           <div className="hidden md:flex space-x-8">
-            {['Home', 'About', 'Experience', 'Skills', 'Education', 'Achievements'].map((item) => (
+            {['Home', 'About', 'Experience', 'Skills', 'Education'].map((item) => (
               <button 
                 key={item}
                 onClick={() => scrollToSection(item.toLowerCase())}
@@ -283,14 +335,13 @@ function App() {
               <div className="absolute inset-0 bg-blue-600 rounded-2xl rotate-6 opacity-20"></div>
               <div className="absolute inset-0 bg-slate-900 rounded-2xl overflow-hidden shadow-2xl rotate-0 transition-transform hover:-rotate-2 duration-500 group">
                 <img 
-                  src="/avatar.jpg" 
+                  src="/avatar.PNG" 
                   alt="Ngô Văn Nhật" 
-                  className="w-full h-full object-cover bg-blue-50 transition-transform duration-500 group-hover:scale-105"
-                  onError={(e) => {
-                    e.target.src = 'https://api.dicebear.com/7.x/avataaars/svg?seed=NhatNgo&backgroundColor=b6e3f4';
-                  }}
+                  onError={(e) => handleImageError(e, "https://api.dicebear.com/7.x/avataaars/svg?seed=NhatNgo")}
+                  className="w-full h-full object-cover bg-blue-50 transition-transform duration-500 group-hover:scale-105 cursor-pointer"
+                  onClick={() => setSelectedImage("/avatar.PNG")}
                 />
-                <div className="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black/80 to-transparent text-white">
+                <div className="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black/80 to-transparent text-white pointer-events-none">
                   <p className="font-bold text-lg">Ngô Văn Nhật</p>
                   <p className="text-sm text-blue-200">Data Analyst</p>
                 </div>
@@ -365,21 +416,24 @@ function App() {
                   <div className="flex-1">
                     <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-lg transition-all duration-300 group">
                       <div className="flex flex-col gap-4">
-                        <div className="w-full h-48 rounded-xl overflow-hidden relative border border-slate-100">
+                        
+                        {/* --- SỬA CSS ẢNH KINH NGHIỆM: AUTO HEIGHT + NO CROP --- */}
+                        <div className="w-full rounded-xl overflow-hidden relative border border-slate-100 bg-slate-50 group-hover:border-blue-200 transition-colors">
                           <img 
                             src={exp.image} 
                             alt={exp.role} 
-                            className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
-                            onError={(e) => {
-                                e.target.src = 'https://placehold.co/600x400?text=Chưa+có+ảnh';
-                            }}
+                            onError={(e) => handleImageError(e, exp.fallback)}
+                            // w-full + h-auto: Ảnh tự dãn chiều cao theo nội dung
+                            className="w-full h-auto object-contain cursor-zoom-in hover:scale-[1.02] transition-transform duration-500"
+                            onClick={() => setSelectedImage(exp.image)}
                           />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-60"></div>
-                          <div className="absolute bottom-3 left-4 text-white font-medium flex items-center gap-2">
+                        </div>
+                        {/* --- CHUYỂN COMPANY LABEL RA NGOÀI ĐỂ KHÔNG CHE ẢNH --- */}
+                        <div className="flex items-center gap-2 text-sm font-semibold text-slate-700 bg-slate-100 px-3 py-2 rounded-lg w-fit">
                              {exp.icon}
                              <span>{exp.company}</span>
-                          </div>
                         </div>
+
                         <div>
                           <div className="flex justify-between items-start mb-2">
                             <h3 className="text-xl font-bold text-slate-900">{exp.role}</h3>
@@ -454,73 +508,110 @@ function App() {
          </div>
       </section>
 
-      <section id="education" className="py-20 bg-white">
+      <section id="education" className="py-20 bg-white overflow-hidden">
         <div className="container mx-auto px-6">
-          <div className="grid md:grid-cols-2 gap-12">
-            <div>
-              <h2 className="text-3xl font-bold text-slate-900 mb-8 flex items-center gap-3">
-                <GraduationCap className="text-blue-600" />
-                Học Vấn
+          
+          <div className="mb-20">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4 inline-flex items-center gap-3">
+                <GraduationCap className="text-blue-600 w-10 h-10" />
+                Nền Tảng Học Vấn
               </h2>
-              <div className="space-y-6">
-                {education.map((edu, index) => (
-                  <div key={index} className="flex gap-4">
-                    <div className="flex flex-col items-center">
-                      <div className="w-3 h-3 bg-blue-600 rounded-full mt-2"></div>
-                      <div className="w-0.5 h-full bg-slate-100 mt-2"></div>
-                    </div>
-                    <div className="pb-6">
-                      <h3 className="text-xl font-bold text-slate-900">{edu.school}</h3>
-                      <p className="text-blue-600 font-medium">{edu.degree}</p>
-                      <p className="text-sm text-slate-500 mb-2">{edu.period}</p>
-                      <p className="text-slate-600">{edu.desc}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <p className="text-slate-500 mt-2">Sự chuẩn bị vững chắc cho con đường sự nghiệp</p>
             </div>
             
-            <div id="achievements">
-              <h2 className="text-3xl font-bold text-slate-900 mb-8 flex items-center gap-3">
-                <Award className="text-yellow-500" />
-                Thành Tựu Nổi Bật
-              </h2>
-              <div className="space-y-6">
-                {achievements.map((ach, index) => (
-                  <div key={index} className={`p-5 rounded-xl border transition-all duration-300 hover:shadow-lg ${ach.color}`}>
-                    <div className="flex gap-4 items-start mb-4">
-                      <div className="bg-white p-2 rounded-full shadow-sm">
-                        {ach.icon}
-                      </div>
-                      <div>
-                        <div className="flex flex-wrap gap-2 items-center mb-1">
-                           <h3 className="font-bold text-slate-900 text-lg">{ach.title}</h3>
-                           <span className="text-xs px-2 py-0.5 bg-white rounded-full border border-slate-200 font-medium text-slate-500">{ach.year}</span>
-                        </div>
-                        <p className="text-slate-600 text-sm">{ach.description}</p>
-                      </div>
-                    </div>
-                    
-                    {ach.images.length > 0 && (
-                      <div className={`grid gap-2 ${ach.images.length > 1 ? 'grid-cols-2 md:grid-cols-3' : 'grid-cols-1'}`}>
-                        {ach.images.map((img, i) => (
-                          <div key={i} className="rounded-lg overflow-hidden h-32 border border-slate-200 group">
-                            <img 
-                              src={img} 
-                              alt={`${ach.title} ${i+1}`} 
-                              className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
-                              onError={(e) => {
-                                  e.target.src = 'https://placehold.co/400x300?text=Ảnh+Thành+Tựu';
-                              }}
-                            />
-                          </div>
-                        ))}
-                      </div>
-                    )}
+            <div className="grid md:grid-cols-3 gap-8">
+              {education.map((edu, index) => (
+                <div key={index} className="bg-slate-50 p-6 rounded-2xl border border-slate-100 hover:border-blue-200 hover:shadow-lg transition-all text-center group">
+                  <div className="w-20 h-20 bg-white rounded-full mx-auto mb-4 flex items-center justify-center shadow-sm p-2 group-hover:scale-110 transition-transform">
+                    <img 
+                      src={edu.logo} 
+                      alt={edu.school} 
+                      className="w-full h-full object-contain"
+                      onError={(e) => handleImageError(e, "https://via.placeholder.com/100")} 
+                    />
                   </div>
-                ))}
-              </div>
+                  <h3 className="text-lg font-bold text-slate-900 mb-1">{edu.school}</h3>
+                  <p className="text-blue-600 font-medium text-sm mb-3">{edu.degree}</p>
+                  <p className="text-slate-500 text-sm">{edu.period}</p>
+                  <p className="text-slate-400 text-xs mt-2">{edu.desc}</p>
+                </div>
+              ))}
             </div>
+          </div>
+
+          <div className="relative">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4 inline-flex items-center gap-3">
+                <Award className="text-yellow-500 w-10 h-10" />
+                Dấu Ấn & Thành Tựu
+              </h2>
+              <p className="text-slate-500 mt-2">Những cột mốc quan trọng (Mới nhất - Cũ hơn)</p>
+            </div>
+
+            <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-gradient-to-b from-blue-200 via-purple-200 to-slate-100 hidden md:block rounded-full"></div>
+
+            <div className="space-y-12 relative">
+              {achievements.map((ach, index) => (
+                <div key={index} className={`flex flex-col md:flex-row items-center justify-center w-full ${index % 2 === 0 ? 'md:flex-row-reverse' : ''}`}>
+                  
+                  <div className="hidden md:block w-5/12"></div>
+
+                  <div className="z-10 w-10 h-10 rounded-full border-4 border-white shadow-md flex items-center justify-center bg-slate-900 my-4 md:my-0 md:w-2/12 relative">
+                    <div className="w-3 h-3 bg-white rounded-full animate-ping absolute opacity-75"></div>
+                    <div className="w-3 h-3 bg-white rounded-full relative z-10"></div>
+                  </div>
+
+                  <div className="w-full md:w-5/12 relative group">
+                    <div className={`hidden md:block absolute top-1/2 -translate-y-1/2 w-6 h-6 rotate-45 bg-white border-l border-b border-slate-200 z-0 ${index % 2 === 0 ? '-left-3 border-r-0 border-t-0' : '-right-3 border-l-0 border-b-0'}`}></div>
+
+                    <div className={`relative bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-300 z-10 ${index % 2 === 0 ? 'mr-auto' : 'ml-auto'}`}>
+                      
+                      <div className="flex items-start gap-4 mb-4">
+                        <div className={`p-3 rounded-xl shadow-lg transform -translate-y-6 ${ach.bg}`}>
+                          {ach.icon}
+                        </div>
+                        <div className="flex-1 pt-1">
+                          <h3 className="font-bold text-slate-900 text-lg leading-tight">{ach.title}</h3>
+                          <span className="inline-block mt-1 text-xs px-2 py-0.5 bg-slate-100 text-slate-600 rounded-full font-medium border border-slate-200">
+                            {ach.year}
+                          </span>
+                        </div>
+                      </div>
+
+                      <p className="text-slate-600 text-sm mb-4">{ach.description}</p>
+
+                      {ach.images && ach.images.length > 0 && (
+                        <div className={`grid gap-2 ${ach.images.length > 1 ? 'grid-cols-3' : 'grid-cols-1'}`}>
+                          {ach.images.map((img, i) => (
+                            <div key={i} className="rounded-lg overflow-hidden border border-slate-100 relative group/img bg-slate-50 cursor-zoom-in">
+                              <div className="absolute inset-0 bg-black/0 group-hover/img:bg-black/5 transition-colors z-10 pointer-events-none"></div>
+                              
+                              {/* --- SỬA CSS ẢNH THÀNH TỰU: W-FULL + H-AUTO --- */}
+                              <img 
+                                src={img} 
+                                alt="Achievement" 
+                                onError={(e) => handleImageError(e)}
+                                // w-full + h-auto: Đảm bảo thấy hết ảnh, không bị cắt, không khoảng trống thừa
+                                className="w-full h-auto object-contain transform group-hover/img:scale-[1.02] transition-transform duration-500"
+                                onClick={() => setSelectedImage(img)}
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="flex justify-center mt-12">
+               <div className="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center text-slate-400 animate-bounce border border-slate-200">
+                  <ArrowDown size={24} />
+               </div>
+            </div>
+
           </div>
         </div>
       </section>
