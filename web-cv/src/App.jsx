@@ -6,7 +6,7 @@ import {
   ExternalLink, ChevronDown, Linkedin,
   Database, Brain, Users, Dumbbell,
   BookOpen, Star, Lightbulb, Globe,
-  Palette, ArrowDown, X, ZoomIn
+  Palette, ArrowDown, X, ZoomIn, MessageCircle
 } from 'lucide-react';
 
 function App() {
@@ -15,7 +15,15 @@ function App() {
   
   // State cho Lightbox (Xem ảnh phóng to)
   const [selectedImage, setSelectedImage] = useState(null);
-
+// --- CẤU HÌNH LIÊN HỆ (Sửa link của bạn tại đây) ---
+  const contactInfo = {
+    phone: "0775419990", 
+    phoneLink: "tel:0775419990", // Bấm vào sẽ gọi điện
+    zaloLink: "https://zalo.me/0775419990", // Link Zalo cá nhân
+    email: "danny196nhatt@gmail.com",
+    linkedin: "https://www.linkedin.com/in/nhat-ngo-van", // Thay link LinkedIn của bạn
+    address: "Ho Chi Minh City"
+  };
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
@@ -307,39 +315,46 @@ function App() {
               Financial & Market Analyst với tư duy dữ liệu sắc bén. Chuyên biến những con số khô khan thành chiến lược đầu tư hiệu quả.
             </p>
             
+            {/* CỤM NÚT LIÊN HỆ */}
             <div className="flex flex-wrap gap-4 pt-4">
-              <a href="mailto:danny196nhatt@gmail.com" className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all shadow-lg shadow-blue-600/30">
+              <a href={`mailto:${contactInfo.email}`} className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all shadow-lg shadow-blue-600/30">
                 <Mail size={18} />
-                Liên hệ ngay
+                Gửi Email
               </a>
-              <button onClick={() => scrollToSection('experience')} className="flex items-center gap-2 px-6 py-3 bg-white text-slate-700 border border-slate-200 rounded-lg hover:bg-slate-50 transition-all">
-                Xem kinh nghiệm
-                <ChevronDown size={18} />
-              </button>
+              <a href={contactInfo.zaloLink} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-6 py-3 bg-white text-slate-700 border border-slate-200 rounded-lg hover:bg-slate-50 transition-all shadow-sm">
+                <MessageCircle size={18} className="text-blue-500" />
+                Chat Zalo
+              </a>
+              <a href={contactInfo.linkedin} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-6 py-3 bg-blue-700 text-white rounded-lg hover:bg-blue-800 transition-all shadow-lg shadow-blue-700/30">
+                <Linkedin size={18} />
+                LinkedIn
+              </a>
             </div>
 
+            {/* THÔNG TIN SĐT VÀ ĐỊA CHỈ (CHỈ HIỆN 1 LẦN) */}
             <div className="flex gap-6 pt-8 text-slate-500">
-              <div className="flex items-center gap-2 hover:text-blue-600 transition-colors">
+              <a href={contactInfo.phoneLink} className="flex items-center gap-2 hover:text-blue-600 transition-colors cursor-pointer">
                 <Phone size={18} />
-                <span>0775419990</span>
-              </div>
+                <span>{contactInfo.phone}</span>
+              </a>
               <div className="flex items-center gap-2 hover:text-blue-600 transition-colors">
                 <MapPin size={18} />
-                <span>Ho Chi Minh City</span>
+                <span>{contactInfo.address}</span>
               </div>
             </div>
           </div>
 
+          {/* ẢNH ĐẠI DIỆN BÊN PHẢI */}
           <div className="relative hidden md:block">
             <div className="relative w-80 h-96 mx-auto">
               <div className="absolute inset-0 bg-blue-600 rounded-2xl rotate-6 opacity-20"></div>
               <div className="absolute inset-0 bg-slate-900 rounded-2xl overflow-hidden shadow-2xl rotate-0 transition-transform hover:-rotate-2 duration-500 group">
                 <img 
-                  src="/avatar.PNG" 
+                  src="/avatar.png" 
                   alt="Ngô Văn Nhật" 
                   onError={(e) => handleImageError(e, "https://api.dicebear.com/7.x/avataaars/svg?seed=NhatNgo")}
                   className="w-full h-full object-cover bg-blue-50 transition-transform duration-500 group-hover:scale-105 cursor-pointer"
-                  onClick={() => setSelectedImage("/avatar.PNG")}
+                  onClick={() => setSelectedImage("/avatar.png")}
                 />
                 <div className="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black/80 to-transparent text-white pointer-events-none">
                   <p className="font-bold text-lg">Ngô Văn Nhật</p>
@@ -620,11 +635,16 @@ function App() {
         <div className="container mx-auto px-6 text-center">
           <h2 className="text-2xl font-bold text-white mb-6">Ngô Văn Nhật</h2>
           <div className="flex justify-center gap-6 mb-8">
-            <a href="mailto:danny196nhatt@gmail.com" className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-blue-600 hover:text-white transition-all">
+            <a href={`mailto:${contactInfo.email}`} className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-blue-600 hover:text-white transition-all">
               <Mail size={20} />
             </a>
-            <a href="#" className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-blue-600 hover:text-white transition-all">
+            {/* Link LinkedIn lấy từ biến contactInfo */}
+            <a href={contactInfo.linkedin} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-blue-600 hover:text-white transition-all">
               <Linkedin size={20} />
+            </a>
+             {/* Link Zalo Footer */}
+             <a href={contactInfo.zaloLink} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-blue-600 hover:text-white transition-all">
+              <MessageCircle size={20} />
             </a>
           </div>
           <p className="text-sm">
