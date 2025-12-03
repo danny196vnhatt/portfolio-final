@@ -273,8 +273,13 @@ function App() {
 
       <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white shadow-md py-2' : 'bg-transparent py-4'}`}>
         <div className="container mx-auto px-6 flex justify-between items-center">
-          <div className="text-2xl font-bold text-blue-900 tracking-tighter cursor-pointer" onClick={() => scrollToSection('home')}>
-            NN<span className="text-blue-500">.</span>
+          {/* LOGO HÌNH ẢNH */}
+          <div className="cursor-pointer" onClick={() => scrollToSection('home')}>
+            <img 
+              src="/logo.png"  // Đảm bảo tên file trong thư mục public đúng là logo.png
+              alt="Logo" 
+              className="h-10 w-auto object-contain" // h-10 là chiều cao, bạn có thể chỉnh h-12 hoặc h-14 nếu muốn to hơn
+            />
           </div>
           <div className="hidden md:flex space-x-8">
             {['Home', 'About', 'Experience', 'Skills', 'Education'].map((item) => (
